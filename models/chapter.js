@@ -19,10 +19,7 @@ const chapterSchema = new mongoose.Schema({
   },
   yearWiseQuestionCount: {
     type: Map,
-    of: {
-      type: Number,
-      required: true
-    },
+    of: Number,  
     required: true
   },
   questionSolved: {

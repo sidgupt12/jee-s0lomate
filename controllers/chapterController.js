@@ -1,5 +1,6 @@
 const Chapter = require('../models/Chapter');
 const redis = require('../config/redis');
+const fs = require('fs');
 
 exports.getAllChapters = async (req, res) => {
   try {
@@ -26,7 +27,7 @@ exports.getAllChapters = async (req, res) => {
     const redisKey = `chapters:${JSON.stringify(filter)}:page=${page}:limit=${limit}`;
     const cached = await redis.get(redisKey);
     if (cached) {
-      return res.status(200).json(JSON.parse(cached));
+      return res.status(200).json(cached);
     }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -49,7 +50,6 @@ exports.getAllChapters = async (req, res) => {
   }
 };
 
-const Chapter = require('../models/Chapter');
 
 exports.getChapterById = async (req, res) => {
   try {
@@ -67,13 +67,8 @@ exports.getChapterById = async (req, res) => {
   }
 };
 
-const Chapter = require('../models/Chapter');
-const redis = require('../config/redis');
-const fs = require('fs');
 
-const Chapter = require('../models/Chapter');
-const fs = require('fs');
-const redis = require('../config/redis');
+
 
 exports.uploadChapters = async (req, res) => {
   try {
@@ -81,7 +76,7 @@ exports.uploadChapters = async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const fileData = fs.readFileSync(req.file.path, 'utf-8');
+    const fileData = req.file.buffer.toString('utf-8');
     let chapters;
 
     try {

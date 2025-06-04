@@ -2,16 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const chapterRoutes = require('./routes/chapter.routes');
-const { Redis } = require('@upstash/redis');
+const redis = require('./config/redis');
 
 const app = express();
 app.use(express.json());
-
-// Connecting upstash Redis
-const redis = new Redis({
-  url: process.env.REDIS_URL,
-  token: process.env.REDIS_TOKEN,
-});
 
 // Attach redis client to app
 app.locals.redis = redis;
@@ -29,6 +23,12 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Routes
 app.use('/api/v1/chapters', chapterRoutes);
+
+app.get('/',(req,res)=>{
+  res.status(200).send({
+    "message":"Hello",
+  })
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

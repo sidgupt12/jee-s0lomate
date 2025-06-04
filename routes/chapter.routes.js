@@ -1,6 +1,7 @@
-const router = require('express').Router;
-const upload = require('../middleware/multerConfig');
-const adminAuth = require('../middleware/adminAuth');
+const express = require('express');
+const router = express.Router();
+const upload = require('../config/multer');
+// const adminAuth = require('../middleware/adminAuth');
 
 const {
   getAllChapters,
@@ -16,6 +17,6 @@ router.get('/', getAllChapters);
 router.get('/:id', getChapterById);
 
 // POST /api/v1/chapters (upload JSON file)
-router.post('/', adminAuth, upload.single('file'), uploadChapters);
+router.post('/', upload.single('file'), uploadChapters);
 
 module.exports = router;
