@@ -1,4 +1,4 @@
-const Chapter = require('../models/Chapter');
+const Chapter = require('../models/chapter');
 const redis = require('../config/redis');
 const fs = require('fs');
 
