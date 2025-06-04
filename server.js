@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const chapterRoutes = require('./routes/chapter.routes');
+const userRoutes = require('./routes/users.route')
 const redis = require('./config/redis');
 
 const app = express();
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Routes
 app.use('/api/v1/chapters', chapterRoutes);
+app.use('/api/v1/user',userRoutes);
 
 app.get('/',(req,res)=>{
   res.status(200).send({

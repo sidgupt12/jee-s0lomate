@@ -8,6 +8,7 @@ const {
   getChapterById,
   uploadChapters
 } = require('../controllers/chapterController.js');
+const { authenticate, requireAdmin } = require('../middleware/auth.js');
 
 
 // GET /api/v1/chapters
@@ -17,6 +18,6 @@ router.get('/', getAllChapters);
 router.get('/:id', getChapterById);
 
 // POST /api/v1/chapters (upload JSON file)
-router.post('/', upload.single('file'), uploadChapters);
+router.post('/', authenticate, requireAdmin ,upload.single('file'), uploadChapters);
 
 module.exports = router;
