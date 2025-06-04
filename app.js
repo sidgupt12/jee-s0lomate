@@ -4,9 +4,13 @@ const mongoose = require('mongoose');
 const chapterRoutes = require('./routes/chapter.routes');
 const userRoutes = require('./routes/users.route')
 const redis = require('./config/redis');
+const rateLimiter = require('./middleware/rateLimiter');
 
 const app = express();
 app.use(express.json());
+
+// Apply rate limiter to all routes
+app.use(rateLimiter);
 
 // Attach redis client to app
 app.locals.redis = redis;
