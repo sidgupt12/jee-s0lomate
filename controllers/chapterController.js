@@ -97,7 +97,8 @@ exports.uploadChapters = async (req, res) => {
     for (const ch of chapters) {
       try {
         const chapter = new Chapter(ch);
-        await chapter.validate(); // Only validate, don't save yet
+        //validating so that user doesn't have to wait for long time
+        await chapter.validate();
         validChapters.push(ch);
       } catch (err) {
         failedChapters.push({
@@ -107,7 +108,7 @@ exports.uploadChapters = async (req, res) => {
       }
     }
 
-    // Send response immediately with failed ones
+    // Send response immediately with failed ones for better UX
     res.status(200).json({
       message: 'Upload processed',
       uploaded: validChapters.length,
@@ -119,7 +120,7 @@ exports.uploadChapters = async (req, res) => {
     setImmediate(async () => {
       try {
         await Chapter.insertMany(validChapters, { ordered: false });
-        await redis.flushall(); // Invalidate Redis cache
+        await redis.flushall(); // Invalidate Redis cache as per req
         console.log('Chapters saved in DB & cache invalidated');
       } catch (e) {
         console.error('Error inserting chapters in background:', e.message);
